@@ -23,8 +23,9 @@ export default defineConfig({
 	reporter: process.env.CI ? [['html', {open: 'never'}], ['list'], ['json', {outputFile: 'test-results.json'}]] : 'html',
 	use: {
 		baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173',
-		trace: 'retain-on-failure',
-		screenshot: 'only-on-failure',
+		trace: 'on',
+		video: 'on',
+		screenshot: 'on',
 		testIdAttribute: 'data-cy', // Preserve existing data-cy selectors
 		serviceWorkers: 'block',
 		launchOptions: {
