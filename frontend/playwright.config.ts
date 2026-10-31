@@ -1,5 +1,7 @@
 import {defineConfig, devices} from '@playwright/test'
+import {currentsReporter} from '@currents/playwright'
 import {execSync} from 'child_process'
+import currentsConfig from './currents.config'
 
 // Find system chromium - for UI mode, set PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH env var
 const getChromiumPath = () => {
@@ -20,7 +22,7 @@ export default defineConfig({
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
 	workers: 1, // No parallelization initially
-	reporter: process.env.CI ? [['html', {open: 'never'}], ['list'], ['json', {outputFile: 'test-results.json'}]] : 'html',
+	reporter: process.env.CI ? [['html', {open: 'never'}], ['list'], ['json', {outputFile: 'test-results.json'}], ...(process.env.CURRENTS_RECORD_KEY ? [currentsReporter(currentsConfig)] : [])] : 'html',
 	use: {
 		baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173',
 		trace: 'on',

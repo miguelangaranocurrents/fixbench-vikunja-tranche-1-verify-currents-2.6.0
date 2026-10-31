@@ -63,6 +63,8 @@ jobs:
           VIKUNJA_DATABASE_TYPE: sqlite
           VIKUNJA_MAILER_ENABLED: 0
           VIKUNJA_RATELIMIT_NOAUTHLIMIT: 1000
+          CURRENTS_RECORD_KEY: ${{ secrets.CURRENTS_RECORD_KEY }}
+          CURRENTS_PROJECT_ID: ${{ secrets.CURRENTS_PROJECT_ID }}
 
       - name: Collect logs
         if: ${{ !cancelled() }}
@@ -87,4 +89,12 @@ jobs:
         with:
           name: test-results
           path: frontend/test-results.json
+          retention-days: 30
+
+      - name: Upload Currents report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: currents
+          path: frontend/currents-report.json
           retention-days: 30
